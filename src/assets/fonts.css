@@ -1,0 +1,11 @@
+@font-face {
+  font-family: "segment7standard";
+  src: url("./fonts/segment7standard-webfont.eot");
+  src: url("./fonts/segment7standard-webfont.eot?#iefix") format("embedded-opentype"),
+    url("./fonts/segment7standard-webfont.woff2") format("woff2"),
+    url("./fonts/segment7standard-webfont.woff") format("woff"),
+    url("./fonts/segment7standard-webfont.ttf") format("truetype"),
+    url("./fonts/segment7standard-webfont.svg#segment7standard") format("svg");
+    font-weight: normal;
+    font-style: normal;
+  }
