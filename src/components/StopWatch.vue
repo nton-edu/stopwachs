@@ -119,7 +119,7 @@ export default {
   left  0
   width 100%
   height 100%
-  border-radius 50%
+  border-radius 15%
   background: radial-gradient(#FFEDBD,#FFD35C);
 
 h1
