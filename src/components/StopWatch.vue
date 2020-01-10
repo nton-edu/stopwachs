@@ -1,15 +1,5 @@
 <template>
   <div class="adjust-box box-1x1" @click="clickTimer">
-    <div class="timer-bar">
-      <svg height="100%" viewBox="0 0 60 60">
-        <path
-          :d="timerBarPath"
-          fill="none"
-          :stroke="strokeColor"
-          stroke-width="1.5"
-        />
-      </svg>
-    </div>
     <vs-card class="cardx circle" :style="statusBgcolor" ref="circle">
       <div slot="header">
         <h2 :style="{ color: colors[index] }">{{ index | repIndex }}</h2>
@@ -18,7 +8,7 @@
         <h1>
           {{ timer.hours }}-{{ timer.minutes | zeroPad }}-{{
             timer.seconds | zeroPad
-          }}-{{ timer.milliSeconds | zeroPad }}
+          }}-{{ timer.milliSeconds }}
         </h1>
       </div>
     </vs-card>

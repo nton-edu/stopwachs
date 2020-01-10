@@ -95,27 +95,28 @@ class Timer {
     var vm = this;
     vm.startTime = Math.floor(Date.now() - vm.diffTime || 0);
     // ループ処理
-    (function loop() {
-      vm.nowTime = Math.floor(Date.now());
-      vm.diffTime = vm.nowTime - vm.startTime;
-      vm.animateFrame = requestAnimationFrame(loop);
-    })();
+    // (function loop() {
+      // vm.nowTime = Math.floor(Date.now());
+      // vm.diffTime = vm.nowTime - vm.startTime;
+      // vm.animateFrame = requestAnimationFrame(loop);
+    // })();
     vm.isRunning = true;
   }
+  // 裏で動かしていた時の処理
   restart() {
     // loop()内で this の値が変更されるので退避
     var vm = this;
     // ループ処理
-    (function loop() {
-      vm.nowTime = Math.floor(Date.now());
-      vm.diffTime = vm.nowTime - vm.startTime;
-      vm.animateFrame = requestAnimationFrame(loop);
-    })();
+    // (function loop() {
+      // vm.nowTime = Math.floor(Date.now());
+      // vm.diffTime = vm.nowTime - vm.startTime;
+    //   vm.animateFrame = requestAnimationFrame(loop);
+    // })();
     vm.isRunning = true;
   }
   stop() {
     this.isRunning = false;
-    cancelAnimationFrame(this.animateFrame);
+    // cancelAnimationFrame(this.animateFrame);
   }
   clear() {
     this.stop();
@@ -137,7 +138,7 @@ class Timer {
   }
   // ミリ数を計算 (1000ミリ秒になったら0ミリ秒に戻る)
   get milliSeconds() {
-    return Math.floor((this.diffTime % 1000) / 10);
+    return Math.floor((this.diffTime % 1000) / 100);
   }
 }
 
@@ -224,6 +225,13 @@ export default {
         this.timers.splice(i, 0, new Timer());
       });
     }
+    setInterval(()=>{
+      this.timers.forEach(timer=>{
+        let nowTime =  Math.floor(Date.now())
+        if(timer.isRunning)
+          timer.diffTime = nowTime - timer.startTime;
+        })
+    },100)
   }
 };
 </script>
