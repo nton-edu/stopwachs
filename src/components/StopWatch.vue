@@ -2,7 +2,7 @@
   <div class="adjust-box box-1x1" @click="clickTimer">
     <vs-card class="cardx circle" :style="statusBgcolor" ref="circle">
       <div slot="header">
-        <h2 :style="{ color: colors[index] }">{{ index | repIndex }}</h2>
+        <h2 :style="{ color: colors[index] }">{{ index }}</h2>
       </div>
       <div slot="media">
         <h1>
@@ -36,7 +36,6 @@ export default {
     clickTimer: function() {
       if (this.timer.isRunning) this.timer.stop();
       else this.timer.start();
-
       this.$emit("saveLocalStorage");
     }
   },
@@ -53,29 +52,6 @@ export default {
         return { background: "linear-gradient(#FFFFFF,#FFF2B8DD,#FCC800DD)" };
       else return { background: "#d3d3d3e6" };
     },
-    strokeColor: function() {
-      if (this.timer.isRunning) return "navy" || "#1f74ffFF";
-      else if (this.timer.diffTime > 1) return "darkorange" || "#FCB000FF";
-      else return "#ffffff00";
-    },
-    timerBarPath: function() {
-      // widthが60の意味は特にない。viewBoxとstrokeの値に合わせてwidthとoffsetを弄ればいいと思う。
-      // シンプルなアプリだからいいけど、微妙に計算量多い気がする。あとこの機能いらなくね。
-      let width = 60;
-      let offset = 2;
-      let x1 = width / 2;
-      let y1 = offset / 2;
-      let r = (width - offset) / 2;
-      let angle = (this.timer.seconds + this.timer.milliSeconds * 0.01) * 6;
-      let rad = (angle / 180) * Math.PI;
-      let x2 = r * Math.sin(rad);
-      let y2 = r * (1 - Math.cos(rad));
-      // return `M 90,0 a 90 90 1 0 1 0,0` 0
-      // return `M 90,0 a 90 90 0 0 1 90,90` 90
-      // return `M 90,0 a 90 90 0 0 1 0,180` 180
-      // return `M 90,0 a 90 90 1 0 1 -90,90` 270
-      return `M ${x1} ${y1} a ${r} ${r} 0 ${angle > 180 ? 1 : 0} 1 ${x2} ${y2}`;
-    }
   },
   filters: {
     // ゼロ埋めフィルタ 引数に桁数を入力する
@@ -83,11 +59,6 @@ export default {
     zeroPad: function(value, num) {
       num = typeof num !== "undefined" ? num : 2;
       return value.toString().padStart(num, "0");
-    },
-    // 時計がZ順で配置されるので、インデックスを調整
-    // flexboxの問題だけど、もう面倒だからいいかな
-    repIndex: function(index) {
-      return [0, 1, 4, 2, 5, 3, 6][index];
     }
   }
 };
@@ -101,12 +72,6 @@ export default {
   width 100%
   height auto
   // background skyblue
-
-.timer-bar
-  z-index 1
-  position absolute
-  margin-top -100%
-  height 100%
 
 .box-1x1:before
   content ""
@@ -125,16 +90,16 @@ export default {
 h1
   text-align center
   vertical-align middle
-  font-size 6vw
+  font-size 3rem
   font-family 'segment7standard'
   transform scale(1,2)
-  @media screen and (max-width: 1024px) and (orientation: portrait) { line-height 36vw }
+  line-height 21rem
   @media screen and (max-width: 480px) { line-height 28vw }
 
 h2
   text-align left
-  @media screen and (max-width: 1024px) and (orientation: portrait) { padding-left 16.5vw }
   @media screen and (max-width: 480px) { padding-left 14.5vw }
+  @media screen and (max-width: 1024px) and (orientation: portrait) { padding-left 16.5vw }
   padding-left 2rem
   font-size 6vw
   position absolute

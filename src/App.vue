@@ -24,45 +24,32 @@
         >
       </div>
     </vs-prompt>
-    <vs-row vs-justify="center" class="watchs">
-      <vs-col
-        v-for="index in (0, 6)"
-        :key="index"
-        vs-type="flex"
-        vs-justify="center"
-        vs-align="flex-start"
-        vs-w="4.7"
-      >
+    <div class="fb-container">
+      <div class="fb-item-watchs">
+        <div class="fb-container fb-item-watch">
+          <div v-for="index in (0, 6)" :key="index" class="fb-watch-col">
         <StopWatch
           :timer="timers[index]"
           :index="index"
           @saveLocalStorage="saveLocalStorage"
         />
-      </vs-col>
-      <vs-col
-        vs-type="flex"
-        vs-justify="center"
-        vs-align="flex-start"
-        vs-w="4.7"
-      >
+          </div>
+        </div>
+      </div>
+      <div class="fb-item-btns">
+        <div class="fb-container fb-item-control-btn">
         <vs-button
           :color="isSomeRunning ? 'warning' : 'primary'"
-          class=""
           @click="toggleAllStatus"
+            class="control-timer-btn"
           >All {{ isSomeRunning ? "Stop" : "Start" }}</vs-button
         >
-      </vs-col>
-      <vs-col
-        vs-type="flex"
-        vs-justify="center"
-        vs-align="flex-start"
-        vs-w="4.7"
-      >
-        <vs-button color="danger" class="" @click="clearAll"
+          <vs-button color="danger" @click="clearAll" class="control-timer-btn"
           >All Clear</vs-button
         >
-      </vs-col>
-    </vs-row>
+  </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -91,32 +78,16 @@ class Timer {
     this.startTime = Math.floor(Date.now() - time);
   }
   start() {
-    // loop()内で this の値が変更されるので退避
     var vm = this;
     vm.startTime = Math.floor(Date.now() - vm.diffTime || 0);
-    // ループ処理
-    // (function loop() {
-      // vm.nowTime = Math.floor(Date.now());
-      // vm.diffTime = vm.nowTime - vm.startTime;
-      // vm.animateFrame = requestAnimationFrame(loop);
-    // })();
     vm.isRunning = true;
   }
-  // 裏で動かしていた時の処理
   restart() {
-    // loop()内で this の値が変更されるので退避
     var vm = this;
-    // ループ処理
-    // (function loop() {
-      // vm.nowTime = Math.floor(Date.now());
-      // vm.diffTime = vm.nowTime - vm.startTime;
-    //   vm.animateFrame = requestAnimationFrame(loop);
-    // })();
     vm.isRunning = true;
   }
   stop() {
     this.isRunning = false;
-    // cancelAnimationFrame(this.animateFrame);
   }
   clear() {
     this.stop();
@@ -225,13 +196,12 @@ export default {
         this.timers.splice(i, 0, new Timer());
       });
     }
-    setInterval(()=>{
-      this.timers.forEach(timer=>{
-        let nowTime =  Math.floor(Date.now())
-        if(timer.isRunning)
-          timer.diffTime = nowTime - timer.startTime;
-        })
-    },100)
+    setInterval(() => {
+      this.timers.forEach(timer => {
+        let nowTime = Math.floor(Date.now());
+        if (timer.isRunning) timer.diffTime = nowTime - timer.startTime;
+      });
+    }, 100);
   }
 };
 </script>
@@ -249,13 +219,73 @@ body
   color #2c3e50
   margin-top 10px
 
-.vs-col button
-  margin 1vw
-  height auto
-  width 100%
-  font-size 6vw
-
 #app .help-btn
   position absolute
   right 10px
+
+.fb-container
+  display flex
+  flex-wrap wrap
+  justify-content space-around
+  align-items center
+.fb-item-watchs
+  @media screen and (min-width:0px) {
+    flex-direction column
+    max-height 90vh
+  }
+  @media screen and (min-width:1024px) {
+    flex-direction row
+    max-width 80vw
+    height 100%
+  }
+.fb-item-btns
+  @media screen and (min-width:0px) {
+    width 100vw
+    height 10vh
+  }
+  @media screen and (min-width:1024px) {
+    width 20vw
+    height 100vh
+  }
+
+
+.fb-item-watch
+  @media screen and (min-width:0px) {
+    width 100vw
+    height 90vh
+  }
+  @media screen and (min-width:1024px) {
+    width 80vw
+    height 100vh
+  }
+
+.fb-watch-col
+  @media screen and (min-width:0px) {
+    width 25vh
+  }
+  @media screen and (min-width:768px) and ( max-width:1024px) {
+    width 28vh
+  }
+  @media screen and (min-width:1024px) {
+    width 25vw
+  }
+
+.fb-item-control-btn
+  align-items stretch
+  @media screen and (min-width:480px) {
+    flex-direction row
+  }
+  @media screen and (min-width:1024px) {
+    flex-direction row
+    padding-top 5.5vh
+  }
+
+.control-timer-btn
+  width 35vw
+  font-size 3rem
+  @media screen and (min-width:1024px) {
+    width 18vw
+    height 50vh
+  }
+
 </style>
